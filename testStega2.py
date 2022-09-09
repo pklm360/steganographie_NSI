@@ -32,7 +32,19 @@ for y in range(hauteur):
 print(binPixels[:30])
 
 newBinPixels = []
-posInBinPixels = 0
+binLength = bin(len(message))[2:]
+print(binLength)
+for i in range(15):
+    print(i)
+    if i < len(binLength):
+        newBinPixels.append(binPixels[i][:-1] + binLength[i])
+    else:
+        newBinPixels.append(binPixels[i])
+
+
+
+posInBinPixels = 5
+
 for elt in binLetters:
     for i in range(2, len(elt)):
         originalVal = binPixels[posInBinPixels]
