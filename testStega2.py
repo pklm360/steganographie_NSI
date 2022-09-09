@@ -9,7 +9,7 @@ f.close()
 #     raise Exception("Taille de message trop grande (>31 symboles)")
 
 
-binLetters = []
+binLetters = [bin(len(message))]
 for letter in message:
     binCode = bin(ord(letter))
 
