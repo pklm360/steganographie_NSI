@@ -50,7 +50,7 @@ for i in range(15):
 
 
 
-posInBinPixels = 5
+posInBinPixels = 15
 
 for elt in binLetters:
     for i in range(2, len(elt)):
