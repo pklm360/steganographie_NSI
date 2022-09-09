@@ -1,12 +1,23 @@
 import PIL.Image
 
-fileMessage = 'message.txt'
-f = open(fileMessage)
+# fileMessage = 'loremIpsum.txt'
+# filePic = 'black.png'
+fileMessage = input('Adresse du fichier texte (.txt):')
+
+
+f = open(fileMessage + '.txt')
 message = f.read()
 f.close()
 
-# if len(message) > 31:
-#     raise Exception("Taille de message trop grande (>31 symboles)")
+if len(message) >= 2**15:
+    raise Exception("Taille de message trop grande (>31 symboles)")
+
+filePic = input("Adresse du l' image initiale (.png):")
+img = PIL.Image.open(filePic + '.png')
+largeur, hauteur = img.size
+
+if 3*largeur*hauteur< len(message):
+    raise Exception ("Resolution de photo insuffisante pour la taille du texte")
 
 
 binLetters = [bin(len(message))]
@@ -16,8 +27,6 @@ for letter in message:
 
     binLetters.append((binCode)) #Enlever le 0b ici ou apres ? l.33
 
-img = PIL.Image.open('white.png')
-largeur, hauteur = img.size
 
 
 
@@ -29,13 +38,11 @@ for y in range(hauteur):
         binPixels.append(str(bin(r)))
         binPixels.append(str(bin(v)))
         binPixels.append(str(bin(b)))
-print(binPixels[:30])
+
 
 newBinPixels = []
 binLength = bin(len(message))[2:]
-print(binLength)
 for i in range(15):
-    print(i)
     if i < len(binLength):
         newBinPixels.append(binPixels[i][:-1] + binLength[i])
     else:
@@ -61,6 +68,8 @@ mergedBinPixels = newBinPixels + binPixels[len(newBinPixels):]
 j = 0
 for y in range(hauteur):
     for x in range(largeur):
+        if j >= len(newBinPixels):
+            break
         r, v, b = int(mergedBinPixels[j], 2), int(mergedBinPixels[j+1], 2), int(mergedBinPixels[j+2], 2)
         j += 3
         img.putpixel((x, y), (r, v, b))
@@ -68,9 +77,10 @@ for y in range(hauteur):
 
 
 
-
-img.save('out.png')
+fileOut = input('Nom du fichier de sortie (.png):')
+img.save(fileOut + '.png')
 img.close()
 
+print(f"Le message a été encodé dans l'image {fileOut}.png avec succes")
 img = PIL.Image.open('out.png')
 img.show()
