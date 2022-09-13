@@ -17,7 +17,7 @@ if len(message) >= 2**15:
 img = PIL.Image.open(filePic + '.png')
 largeur, hauteur = img.size
 
-if 3*largeur*hauteur< len(message):
+if 3*largeur*hauteur< len(message)*8:
     raise Exception ("Resolution de photo insuffisante pour la taille du texte")
 
 ### Encodage en Unicode des lettres ###
