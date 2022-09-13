@@ -11,10 +11,9 @@ largeur, hauteur = img.size
 binPixels = []
 for y in range(hauteur):
     for x in range(largeur):
-        r, v, b = img.getpixel((x, y))
-        binPixels.append(bin(r))
-        binPixels.append(bin(v))
-        binPixels.append(bin(b))
+        rvb = img.getpixel((x, y))
+        for i in range(3):
+            binPixels.append(bin(rvb[i]))
 
 
 length = ''

@@ -1,7 +1,7 @@
 import PIL.Image
 
 ### Entree et verification de l'image et du message ###
-fileMessage = 'petitLoremIpsum'
+fileMessage = 'message'
 filePic = 'james_bond'
 #fileMessage = input('Adresse du fichier texte (.txt):')
 
@@ -11,13 +11,13 @@ message = f.read()
 f.close()
 
 if len(message) >= 2**15:
-    raise Exception("Taille de message trop grande (>31 symboles)")
+    raise Exception("Taille de message trop grande (>32767 symboles)")
 
 #filePic = input("Adresse du l' image initiale (.png):")
 img = PIL.Image.open(filePic + '.png')
 largeur, hauteur = img.size
 
-if 3*largeur*hauteur< len(message)*8:
+if 3*largeur*hauteur <= len(message)*8:
     raise Exception ("Resolution de photo insuffisante pour la taille du texte")
 
 ### Encodage en Unicode des lettres ###
@@ -36,7 +36,7 @@ for y in range(hauteur):
     for x in range(largeur):
         rvb = img.getpixel((x, y))
         for i in range(3):
-            binPixels.append(str(bin(rvb[i])))
+            binPixels.append(bin(rvb[i]))
 
 
 
@@ -94,17 +94,5 @@ img.close()
 
 print(f"Le message a été encodé dans l'image out.png avec succes")
 img = PIL.Image.open('out.png')
-
-# lst = []
-# for y in range(hauteur):
-#     for x in range(largeur):
-#         r, v, b = img.getpixel((x, y))
-#         #print(bin(r), bin(v), bin(b))
-#         lst.append(str(bin(r)))
-#         lst.append(str(bin(v)))
-#         lst.append(str(bin(b)))
-#
-# for i in range(len(newBinPixels)):
-#     print(lst[i], newBinPixels[i])
 
 img.show()
