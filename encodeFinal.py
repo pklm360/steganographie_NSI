@@ -1,7 +1,7 @@
 import PIL.Image
 
 ### Entree et verification de l'image et du message ###
-fileMessage = 'message'
+fileMessage = 'petitLoremIpsum'
 filePic = 'james_bond'
 #fileMessage = input('Adresse du fichier texte (.txt):')
 
@@ -34,10 +34,10 @@ for letter in message:
 binPixels = []
 for y in range(hauteur):
     for x in range(largeur):
-        r, v, b = img.getpixel((x, y))
-        binPixels.append(str(bin(r)))
-        binPixels.append(str(bin(v)))
-        binPixels.append(str(bin(b)))
+        rvb = img.getpixel((x, y))
+        for i in range(3):
+            binPixels.append(str(bin(rvb[i])))
+
 
 
 ### Encodage de la longeur du message ###
@@ -67,11 +67,18 @@ for elt in binLetters:
 ###Insertion des nouvelles valeurs des pixels ###
 mergedBinPixels = newBinPixels + binPixels[len(newBinPixels):]
 j = 0
+exit = False
 for y in range(hauteur):
     for x in range(largeur):
+        if j>=len(newBinPixels):
+            exit = True
+            break
+            
         r, v, b = int(mergedBinPixels[j], 2), int(mergedBinPixels[j+1], 2), int(mergedBinPixels[j+2], 2)
         j += 3
         img.putpixel((x, y), (r, v, b))
+    if exit:
+        break
 
 
 

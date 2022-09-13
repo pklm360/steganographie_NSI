@@ -7,6 +7,7 @@ largeur, hauteur = img.size
 
 
 
+
 binPixels = []
 for y in range(hauteur):
     for x in range(largeur):
