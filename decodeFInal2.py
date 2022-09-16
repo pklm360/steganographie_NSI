@@ -1,6 +1,6 @@
 import PIL.Image
 
-### Entree et verification de l'image ###
+#Entree de l'image et recuperation de la hauteur et de la largeur
 filePic = 'out'
 
 
@@ -9,7 +9,7 @@ largeur, hauteur = img.size
 
 
 
-
+###Decodage de la longeur du message ###
 length = ''
 for x in range(5):
     rvb = img.getpixel((x, 0))
@@ -17,39 +17,36 @@ for x in range(5):
         length += bin(rvb[i])[-1]
 
 length = int(length, 2)
-print(length)
-nbPixelsRestants = length
+
+
+###Recuperation des valeurs RVB ###
+parcoursBits = 0 #Pour sortir de la boucle une fois un nombre suffisant de codes RVB de pixels parcourus
 binPixels = []
 for y in range(hauteur):
-    if nbPixelsRestants < largeur:
-        largeurParcours = nbPixelsRestants
-    else:
-        largeurParcours = largeur
-    for x in range(largeurParcours):
-        rvb = img.getpixel((x, y))
-        for i in range(3):
-            binPixels.append(bin(rvb[i]))
-    nbPixelsRestants -= largeur
-print(len(binPixels))
+    for x in range(largeur):
+        if x >= 5 or y > 0:
+
+            rvb = img.getpixel((x, y))
+            for i in range(3):
+                binPixel = bin(rvb[i])[2:]
+                binPixels.append((binPixel))
+                parcoursBits += 1
+    if parcoursBits >= length*8:
+        break
+            
+
+
 
 ### Decodage des lettres ###
 binLetters = []
 letter = ''
 
 
-for i in range(length*3): #On commence le decodage à l'indice 15
+for i in range(length*8): #On commence le decodage à l'indice 15
     if len(letter) == 8:
-
         binLetters.append(chr(int(letter, 2)))
         letter = ""
-
-
     letter += binPixels[i][-1]
 
-print(len(binLetters))
-#print("".join(binLetters))
-
-
-
-
-
+### Affichage final ###
+print("".join(binLetters))
